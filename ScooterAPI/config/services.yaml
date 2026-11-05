@@ -1,0 +1,52 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Scan global : Symfony charge toutes les classes de src/ et autoconfigure
+    # les handlers (#[AsMessageHandler]), les processors, etc.
+    Src\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Domain/Entity/'
+            - '../src/Domain/ValueObject/'
+
+    # HANDLERS (facultatif maintenant : déjà couvert par le scan global,
+    # mais on peut le garder pour la clarté)
+    # Src\Application\User\Command\RegisterUser\RegisterUserHandler: ~
+    # Src\Application\Scooter\Command\RegisterScooter\RegisterScooterHandler: ~
+
+    # PROCESSORS API PLATFORM
+    Src\Infrastructure\ApiPlatform\State\Processor\:
+        resource: '../src/Infrastructure/ApiPlatform/State/Processor/'
+
+    # REPOSITORIES DOCTRINE
+    Src\Infrastructure\Persistence\Doctrine\:
+        resource: '../src/Infrastructure/Persistence/Doctrine/'
+
+    # SERVICES DE SECURITE
+    Src\Infrastructure\Security\:
+        resource: '../src/Infrastructure/Security/'
+
+    # ASSOCIATION DES INTERFACES AUX IMPLEMENTATIONS
+
+    Src\Application\User\Contract\PasswordHasherInterface:
+        alias: Src\Infrastructure\Security\NativePasswordHasher
+
+    Src\Domain\User\Repository\UserRepositoryInterface:
+        alias: Src\Infrastructure\Persistence\Doctrine\DoctrineUserRepository
+
+    Src\Domain\Scooter\Repository\ScooterRepositoryInterface:
+        alias: Src\Infrastructure\Persistence\Doctrine\DoctrineScooterRepository
+
+    Src\Domain\Reservation\Repository\ReservationRepositoryInterface:
+        alias: Src\Infrastructure\Persistence\Doctrine\DoctrineReservationRepository
+
+    Src\Application\Reservation\Query\GetReceivedRequests\ReservationRequestReaderInterface:
+        alias: Src\Infrastructure\Persistence\Doctrine\DoctrineReservationRequestReader
+
+    Src\Application\Scooter\Query\GetAvailableScooters\ScooterCatalogReaderInterface:
+        alias: Src\Infrastructure\Persistence\Doctrine\DoctrineScooterCatalogReader

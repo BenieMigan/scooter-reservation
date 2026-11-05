@@ -1,0 +1,19 @@
+# Dependances
+node_modules/
+
+# Resultat de npm run build
+dist/
+
+# Configuration locale
+.env.local
+.env.*.local
+
+# Journaux
+npm-debug.log*
+*.log
+
+# Editeur / systeme
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

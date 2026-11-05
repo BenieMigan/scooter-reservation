@@ -1,0 +1,17 @@
+# Dependances
+/vendor/
+
+# Cache et logs
+/var/
+/public/bundles/
+
+# Secrets et configuration locale
+.env.local
+.env.*.local
+/config/jwt/*.pem
+
+# Editeur / systeme
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

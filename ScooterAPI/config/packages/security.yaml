@@ -1,0 +1,33 @@
+security:
+    password_hashers:
+        Src\Infrastructure\Security\SecurityUser: 'auto'
+
+    role_hierarchy:
+        ROLE_OWNER: ROLE_USER
+
+    providers:
+        app_user_provider:
+            id: Src\Infrastructure\Security\UserProvider
+
+    firewalls:
+        dev:
+            pattern: ^/_(profiler|wdt)
+            security: false
+        main:
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/auth/login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            jwt: ~
+
+    access_control:
+    - { path: ^/api/?$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+    - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth/, roles: PUBLIC_ACCESS }
+    - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        
